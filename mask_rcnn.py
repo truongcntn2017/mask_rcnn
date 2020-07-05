@@ -20,18 +20,13 @@ log = logging.getLogger('rcnn')
 
 def parse_args() -> dict:
     ap = argparse.ArgumentParser()
-    ap.add_argument("image", nargs=1, type=Path,
-        help="path to input image")
-    ap.add_argument("-m", "--mask-rcnn", type=Path, default=Path('mask-rcnn-coco'),
-	    help="base path to mask-rcnn directory")
-    ap.add_argument("-v", "--visualize", action='store_true',
-	    help="whether or not we are going to visualize each instance")
-    ap.add_argument("-c", "--confidence", type=float, default=0.5,
-	    help="minimum probability to filter weak detections")
-    ap.add_argument("-t", "--threshold", type=float, default=0.3,
-	    help="minimum threshold for pixel-wise mask segmentation")
+    ap.add_argument("-i", "--image", required=True, help="path to input image")
+    ap.add_argument("-m", "--mask-rcnn", required=True, help="base path to mask-rcnn directory")
+    ap.add_argument("-v", "--visualize", type=int, default=0, help="whether or not we are going to visualize each instance")
+    ap.add_argument("-c", "--confidence", type=float, default=0.5, help="minimum probability to filter weak detections")
+    ap.add_argument("-t", "--threshold", type=float, default=0.3, help="minimum threshold for pixel-wise mask segmentation")
     args = vars(ap.parse_args())
-
+    
     mask_rcnn_dir = args['mask_rcnn']
     args['image'] = args['image'][0]
     args['labels_path'] = mask_rcnn_dir / _COCO_LABELS_FILE
